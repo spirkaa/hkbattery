@@ -20,6 +20,20 @@ div.tooltip-inner {
     white-space: nowrap;
 }
 
+.tdbold {
+    font-weight: bold;
+}
+
+#row-main {
+    /* necessary to hide collapsed sidebar */
+    overflow-x: hidden;
+}
+
+#content {
+    /* for the animation */
+    transition: width 0.3s ease;
+}
+
 #sidebar {
     /* for the animation */
     transition: margin 0.3s ease;
@@ -36,14 +50,4 @@ div.tooltip-inner {
         /* same width as sidebar */
         margin-left: -25%;
     }
-}
-
-#row-main {
-    /* necessary to hide collapsed sidebar */
-    overflow-x: hidden;
-}
-
-#content {
-    /* for the animation */
-    transition: width 0.3s ease;
 }

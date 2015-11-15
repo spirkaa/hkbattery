@@ -13,7 +13,7 @@ $('#filter-control').on('click', 'input[name="filter"]', function(event) {
     $('input[class*="span2"]').each(function(i, el) {
         console.log($(el).attr('id') + ': ' + $(el).data('slider').getValue()[0])
     });
-    run_process('filter');
+    apply_filter('filter');
 });
 // column sorting
 $(document).ready(function() {
@@ -31,7 +31,7 @@ $(document).ready(function() {
     });
 });
 
-function run_process(action) {
+function apply_filter(action) {
     var data = {}
     data[action] = action
     $('input[class*="form-control"]').each(function(i, el) {

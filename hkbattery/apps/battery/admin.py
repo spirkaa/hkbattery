@@ -16,9 +16,7 @@ class BatteryAdmin(admin.ModelAdmin):
                     'modified',
                     'id')
 
-    list_filter = ('price',
-                   'ru_stock',
-                   's_config',
+    list_filter = ('s_config',
                    'capacity',
                    'discharge',
                    'created',

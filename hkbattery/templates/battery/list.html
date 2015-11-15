@@ -1,33 +1,24 @@
-{% extends 'base.html' %}
-{% load bootstrap3 %}
-
-{% block content %}
+{% extends 'base.html' %} {% load bootstrap3 %} {% block content %}
 <div class="dpad container-fluid">
-<h1>{% block title %}HK Batteries{% endblock %}</h1>
-{% if batteries %}
-<ul>
-{% for battery in batteries %}
-    <li><img src="{{battery.pic}}" style="width:50px;"/><a href="{{battery.link}}" target="_blank">{{battery.name}}</a> - €{{battery.price}} (₽{{battery.price_rub}}), {{battery.ru_stock}} pcs {% if battery.s_config %}
-    <br />{{battery.s_config}}S, {{battery.capacity}}mAh, {{battery.discharge}}C, {{battery.weight}}g</li>{% endif %}
-{% endfor %}
-</ul>
-{% if is_paginated %}
-<div class="pagination">
-    <span class="step-links">
+    <h1>{% block title %}HK Batteries{% endblock %}</h1> {% if batteries %}
+    <ul>
+        {% for battery in batteries %}
+        <li><img src="{{battery.pic}}" style="width:50px;" /><a href="{{battery.link}}" target="_blank">{{battery.name}}</a> - €{{battery.price}} (₽{{battery.price_rub}}), {{battery.ru_stock}} pcs {% if battery.s_config %}
+            <br />{{battery.s_config}}S, {{battery.capacity}}mAh, {{battery.discharge}}C, {{battery.weight}}g</li>{% endif %} {% endfor %}
+    </ul>
+    {% if is_paginated %}
+    <div class="pagination">
+        <span class="step-links">
         {% if batteries.has_previous %}
             <a href="?page={{ batteries.previous_page_number }}">previous</a>
         {% endif %}
 
         <span class="current">
             Page {{ batteries.number }} of {{ batteries.paginator.num_pages }}.
+        </span> {% if batteries.has_next %}
+        <a href="?page={{ batteries.next_page_number }}">next</a> {% endif %}
         </span>
-
-        {% if batteries.has_next %}
-            <a href="?page={{ batteries.next_page_number }}">next</a>
-        {% endif %}
-    </span>
-</div>
-{% endif %}
-{% endif %}
+    </div>
+    {% endif %} {% endif %}
 </div>
 {% endblock %}
