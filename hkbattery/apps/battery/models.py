@@ -13,7 +13,7 @@ class CommonInfo(TimeStampedModel):
     link = models.URLField('Link to HobbyKing', unique=True)
     name = models.CharField('Name', max_length=200)
     pic = models.URLField('Image link', blank=True)
-    price = models.DecimalField('Price (euro)', max_digits=6, decimal_places=2)
+    price = models.DecimalField('Price, €', max_digits=6, decimal_places=2)
     ru_stock = models.SmallIntegerField('RU stock', null=True, blank=True)
 
     class Meta:
@@ -21,22 +21,22 @@ class CommonInfo(TimeStampedModel):
 
 
 class Battery(CommonInfo):
-    s_config = models.SmallIntegerField('Config (S)', null=True, blank=True)
-    capacity = models.SmallIntegerField('Capacity (mAh)', null=True, blank=True)
-    weight = models.SmallIntegerField('Weight (g)', null=True, blank=True)
-    cap_to_weight = models.DecimalField('Cap to Weight', null=True, blank=True, max_digits=6, decimal_places=2)
-    cap_to_price = models.DecimalField('Cap to Price', null=True, blank=True, max_digits=6, decimal_places=2)
-    discharge = models.SmallIntegerField('Discharge (C)', null=True, blank=True)
-    amps = models.SmallIntegerField('Current (A)', null=True, blank=True)
-    charge = models.SmallIntegerField('Charge (C)', null=True, blank=True)
-    length = models.SmallIntegerField('Length-A (mm)', null=True, blank=True)
-    height = models.SmallIntegerField('Height-B (mm)', null=True, blank=True)
-    width = models.SmallIntegerField('Width-C (mm)', null=True, blank=True)
+    s_config = models.SmallIntegerField('Config, S', null=True, blank=True)
+    capacity = models.SmallIntegerField('Capacity, mAh', null=True, blank=True)
+    weight = models.SmallIntegerField('Weight, g', null=True, blank=True)
+    cap_to_weight = models.DecimalField('Cap / weight', null=True, blank=True, max_digits=6, decimal_places=2)
+    cap_to_price = models.DecimalField('Cap / price', null=True, blank=True, max_digits=6, decimal_places=2)
+    discharge = models.SmallIntegerField('Discharge, C', null=True, blank=True)
+    amps = models.SmallIntegerField('Current, A', null=True, blank=True)
+    charge = models.SmallIntegerField('Charge, C', null=True, blank=True)
+    length = models.SmallIntegerField('Length, mm', null=True, blank=True)
+    height = models.SmallIntegerField('Height, mm', null=True, blank=True)
+    width = models.SmallIntegerField('Width, mm', null=True, blank=True)
 
     class Meta:
         verbose_name = 'Battery'
         verbose_name_plural = 'Batteries'
-        ordering = ['price']
+        ordering = ['s_config']
 
     @property
     def price_rub(self):
