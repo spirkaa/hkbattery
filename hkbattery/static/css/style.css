@@ -1,0 +1,49 @@
+.dpad {
+    margin: 15px;
+}
+
+.btn {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.table tbody>tr>td {
+    vertical-align: middle;
+}
+
+.bottom-buffer {
+    margin-bottom: 20px;
+}
+
+div.tooltip-inner {
+    max-width: none;
+    white-space: nowrap;
+}
+
+#sidebar {
+    /* for the animation */
+    transition: margin 0.3s ease;
+}
+
+.collapsed {
+    /* hide it for small displays*/
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .collapsed {
+        display: block;
+        /* same width as sidebar */
+        margin-left: -25%;
+    }
+}
+
+#row-main {
+    /* necessary to hide collapsed sidebar */
+    overflow-x: hidden;
+}
+
+#content {
+    /* for the animation */
+    transition: width 0.3s ease;
+}

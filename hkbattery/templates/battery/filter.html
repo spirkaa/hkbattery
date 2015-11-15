@@ -1,0 +1,20 @@
+{% block filtr %}
+<form method="get" id="filter-control" role="form" class="form-horizontal">{% csrf_token %}
+    <div class="form-group">
+        <label for="name">Name</label>
+        <br />
+        <input id="name" type="text" class="form-control" value="" />
+    </div>
+    {% for k, v in filter_vals.items %}
+    <div class="form-group">
+        <label for="{{k}}">{{v.v_name}}</label>
+        <br />
+        <input id="{{k}}" type="text" class="form-control" value="" data-slider-min="{{v.min}}" data-slider-max="{{v.max}}" data-slider-step="1" data-slider-value="[{{v.min}},{{v.max}}]" />
+    </div>
+    {% endfor %}
+    <div class="form-actions">
+        <input type="submit" name="filter" class="btn btn-primary" value="Filter" />
+        <input type="submit" name="reset" class="btn btn-default" value="Reset" />
+    </div>
+</form>
+{% endblock %}

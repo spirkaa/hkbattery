@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+<div class="dpad container-fluid">
+<h1>{% block title %}HK Batteries{% endblock %}</h1>
+<table class="table table-condensed"
+       data-toggle="table"
+       data-striped="True"
+       data-pagination="True"
+       data-page-size="25"
+       data-search="True"
+       data-filter-control="true"
+       data-show-columns="True"
+       data-show-toggle="True"
+       data-show-export="true"
+       data-mobile-responsive="true" >
+<thead>
+<tr>
+<th></th>
+<th data-sortable="true" data-filter-control="input">Name</th>
+<th data-sortable="true">Price Rub</th>
+<th data-sortable="true">Price (euro)</th>
+<th data-sortable="true" data-filter-control="select">RU stock</th>
+<th data-sortable="true" data-filter-control="select">Config (S)</th>
+<th data-sortable="true">Capacity (mAh)</th>
+<th data-sortable="true">Weight (g)</th>
+<th data-sortable="true">Cap to Price</th>
+<th data-sortable="true">Cap to Weight</th>
+<th data-sortable="true">Discharge (C)</th>
+<th data-sortable="true">Current (A)</th>
+<th data-sortable="true">Charge (C)</th>
+<th data-sortable="true">Length-A (mm)</th>
+<th data-sortable="true">Height-B (mm)</th>
+<th data-sortable="true">Width-C (mm)</th>
+</tr>
+</thead>
+<tbody>
+{% for battery in batteries %}
+<tr>
+    <td><img src="{{battery.pic}}" style="width:50px;"/></td>
+    <td><a href="{{battery.link}}">{{battery.name}}</a></td>
+    <td>{{battery.price_rub}}</td>
+    <td>{{battery.price}}</td>
+    <td>{{battery.ru_stock}}</td>
+    <td>{{battery.s_config}}</td>
+    <td>{{battery.capacity}}</td>
+    <td>{{battery.weight}}</td>
+    <td>{{battery.cap_to_price}}</td>
+    <td>{{battery.cap_to_weight}}</td>
+    <td>{{battery.discharge}}</td>
+    <td>{{battery.amps}}</td>
+    <td>{{battery.charge}}</td>
+    <td>{{battery.length}}</td>
+    <td>{{battery.height}}</td>
+    <td>{{battery.width}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+{% endblock %}
