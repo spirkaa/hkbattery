@@ -86,7 +86,7 @@ def parser():
     logger.info('Collect data...')
     with ThreadPool(8) as pool:
         results = pool.map(get_product_data, product_page_urls)
-        logger.info('It took', round(time()-start, 2), 'seconds.')
+        logger.info('It took %d seconds.', round(time()-start, 2))
         return results
 
 

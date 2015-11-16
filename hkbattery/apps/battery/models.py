@@ -1,5 +1,6 @@
 import logging
 from collections import OrderedDict
+from decimal import Decimal
 from django.db import models
 from django.db.models import Avg, Count, F, Max, Min, Sum, Q, Prefetch, Case, When
 from django_extensions.db.models import TimeStampedModel
@@ -83,21 +84,22 @@ def db_operations(results, operation):
                 logger.error('Cant insert %s, skip' % r['name'])
                 raise
         elif operation == 'update':
+            r['amps'] = amps_c
+            r['cap_to_price'] = ctp
+            r['cap_to_weight'] = ctw
             item, created = Battery.objects.get_or_create(link=r['link'],
-                                                          amps=amps_c,
-                                                          cap_to_price=ctp,
-                                                          cap_to_weight=ctw,
-                                                          **r)
-            if item.price != r['price']:
+                                                          defaults=r)
+            if item.price != Decimal(r['price']):
                 item.price = r['price']
-                logger.info('Updade "%s" price' % item.name)
-            elif item.ru_stock != r['ru_stock']:
+                item.save()
+                logger.info('Updade "%s" PRICE', item.name)
+            if item.ru_stock != int(r['ru_stock']):
                 item.ru_stock = r['ru_stock']
-                logger.info('Updade "%s" stock' % item.name)
-            item.save()
+                logger.info('Updade "%s" STOCK', item.name)
+                item.save()
 
 
 @async
-def run_db_oper(operation):
+def run_db_operation(operation):
     results = parser()
     db_operations(results, operation)

@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.views import generic
 from django_tables2 import RequestConfig
-from .models import Battery, run_db_oper, min_max_values
+from .models import Battery, run_db_operation, min_max_values
 from .filters import BatteryFilter
 from .tables import BatteryTable
 
@@ -57,5 +57,5 @@ class ListView(generic.ListView):
 
 
 def update(request):
-    # run_db_oper('populate')
+    run_db_operation('update')
     return redirect(reverse('battery:index'))
