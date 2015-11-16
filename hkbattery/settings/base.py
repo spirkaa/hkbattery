@@ -28,7 +28,18 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
+BOOTSTRAP3 = {
 
+    # The URL to the jQuery JavaScript file
+    'jquery_url': '/static/js/jquery.min.js',
+
+    # The complete URL to the Bootstrap CSS file (None means derive it from base_url)
+    'css_url': '/static/css/bootstrap.min.css',
+
+    # The complete URL to the Bootstrap JavaScript file (None means derive it from base_url)
+    'javascript_url': '/static/js/bootstrap.min.js',
+
+}
 # Application definition
 
 INSTALLED_APPS = (

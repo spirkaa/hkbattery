@@ -1,5 +1,4 @@
 import logging
-from collections import OrderedDict
 from decimal import Decimal
 from django.db import models
 from django.db.models import Avg, Count, F, Max, Min, Sum, Q, Prefetch, Case, When
@@ -48,20 +47,20 @@ class Battery(CommonInfo):
 
 
 def min_max_values():
-    field_list = ['price', 'ru_stock', 's_config',
-                  'capacity', 'discharge', 'weight']
-    min_max_list = []
+    fields = ['price', 'ru_stock', 's_config',
+                  'capacity', 'discharge', 'amps', 'weight']
+    min_max = []
     q = Battery.objects.all()
-    for name in field_list:
-        verb_name = Battery._meta.get_field(name).verbose_name.title()
+    for field in fields:
+        verb_name = Battery._meta.get_field(field).verbose_name.title()
         v_name = {'v_name': verb_name}
-        min_val = q.aggregate(Min(name))
-        min_val['min'] = min_val.pop('%s__min' % name)
-        max_val = q.aggregate(Max(name))
-        max_val['max'] = max_val.pop('%s__max' % name)
-        valdict = {**v_name, **{**min_val, **max_val}}
-        min_max_list.append(valdict)
-    return OrderedDict(zip(field_list, min_max_list))
+        min_val = q.aggregate(Min(field))
+        min_val['min'] = min_val.pop('{}__min'.format(field))
+        max_val = q.aggregate(Max(field))
+        max_val['max'] = max_val.pop('{}__max'.format(field))
+        vals_dict = {**v_name, **{**min_val, **max_val}}
+        min_max.append(vals_dict)
+    return dict(zip(fields, min_max))
 
 
 def db_operations(results, operation):
@@ -74,14 +73,14 @@ def db_operations(results, operation):
             pass
         if operation == 'populate':
             try:
-                logger.info('Insert "%s"' % r['name'])
+                logger.info('Insert "%s"', r['name'])
                 item = Battery(amps=amps_c,
                                cap_to_price=ctp,
                                cap_to_weight=ctw,
                                **r)
                 item.save()
             except:
-                logger.error('Cant insert %s, skip' % r['name'])
+                logger.error('Cant insert %s, skip', r['name'])
                 raise
         elif operation == 'update':
             r['amps'] = amps_c

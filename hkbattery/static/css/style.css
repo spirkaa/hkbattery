@@ -2,52 +2,60 @@
     margin: 15px;
 }
 
+.bottom-buffer {
+    margin-bottom: 20px;
+}
+
 .btn {
     margin-top: 3px;
     margin-bottom: 3px;
 }
 
-.table tbody>tr>td {
-    vertical-align: middle;
-}
 
-.bottom-buffer {
-    margin-bottom: 20px;
-}
-
-div.tooltip-inner {
-    max-width: none;
-    white-space: nowrap;
-}
-
-.tdbold {
-    font-weight: bold;
-}
+/* Collapsable filter panel */
 
 #row-main {
-    /* necessary to hide collapsed sidebar */
     overflow-x: hidden;
 }
 
 #content {
-    /* for the animation */
     transition: width 0.3s ease;
 }
 
 #sidebar {
-    /* for the animation */
     transition: margin 0.3s ease;
 }
 
 .collapsed {
-    /* hide it for small displays*/
     display: none;
 }
 
 @media (min-width: 992px) {
     .collapsed {
         display: block;
-        /* same width as sidebar */
         margin-left: -25%;
     }
+}
+
+
+/* Django-tables2 bootstrap */
+
+.table th.asc:after {
+    content: '\0000a0\0025b2';
+}
+
+.table th.desc:after {
+    content: '\0000a0\0025bc';
+}
+
+.pagination {
+    text-align: center;
+}
+
+.tdbold {
+    font-weight: bold;
+}
+
+.table tbody>tr>td {
+    vertical-align: middle;
 }

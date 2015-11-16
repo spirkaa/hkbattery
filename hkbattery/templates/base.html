@@ -3,9 +3,7 @@
 {% block bootstrap3_title %}{% block title %}{% endblock %}{% endblock %}
 {% block bootstrap3_extra_head %}
 {% load staticfiles %}
-    <link href="{% static 'css/bootstrap-table.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/bootstrap-slider.min.css' %}" rel="stylesheet">
-    <link href="{% static 'css/bootstrap-tables.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -15,14 +13,6 @@
 {% endblock %}
 
 {% block bootstrap3_extra_script %}
-    <script src="//rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js"></script>
-    <script src="{% static 'js/bootstrap-table.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-ru-RU.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-mobile.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-filter.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-filter-control.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table-export.min.js' %}"></script>
     <script src="{% static 'js/bootstrap-slider.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
     <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}
