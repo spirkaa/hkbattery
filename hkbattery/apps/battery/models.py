@@ -48,7 +48,7 @@ class Battery(CommonInfo):
 
 def min_max_values():
     fields = ['price', 'ru_stock', 's_config',
-                  'capacity', 'discharge', 'amps', 'weight']
+              'capacity', 'discharge', 'amps', 'weight']
     min_max = []
     q = Battery.objects.all()
     for field in fields:

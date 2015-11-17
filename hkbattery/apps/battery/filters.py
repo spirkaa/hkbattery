@@ -2,8 +2,7 @@ from django import forms
 from django.db import models
 import django_filters
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Fieldset, Div
-from crispy_forms.bootstrap import InlineField
+from crispy_forms.layout import Submit, Layout
 from .models import Battery
 
 
@@ -48,9 +47,10 @@ class BatteryFilter(django_filters.FilterSet):
         }
     }
 
-    class Meta:     
+    class Meta:
         model = Battery
-        # fields = ['name', 'price', 'ru_stock', 's_config', 'capacity', 'weight', 'discharge', 'amps']
+        # fields = ['name', 'price', 'ru_stock', 's_config',
+        # 'capacity', 'weight', 'discharge', 'amps']
 
     @property
     def helper(self):
@@ -59,14 +59,14 @@ class BatteryFilter(django_filters.FilterSet):
         helper.form_class = 'form-horizontal'
         helper.form_id = 'filter'
         helper.layout = Layout(
-                            'name',
-                            'price',
-                            'ru_stock',
-                            's_config',
-                            'capacity',
-                            'discharge',
-                            'amps',
-                            'weight',
-                        Submit('filter', 'Filter'))
+            'name',
+            'price',
+            'ru_stock',
+            's_config',
+            'capacity',
+            'discharge',
+            'amps',
+            'weight',
+            Submit('filter', 'Filter'))
 
         return helper
