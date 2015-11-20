@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import generic
 from django_tables2 import RequestConfig
 from .models import Battery, run_db_operation, min_max_values
@@ -45,6 +45,19 @@ class ListView(generic.ListView):
 
         context['batteries'] = batteries
         return context
+
+
+class CompareView(generic.View):
+
+    def get(self, request):
+        template_name = 'battery/compare.html'
+        if request.GET.get('compare'):
+            item_pks = request.GET.getlist('compare')
+            table = BatteryTable(Battery.objects.filter(pk__in=item_pks))
+            RequestConfig(request).configure(table)
+            return render(request, template_name, {'table': table})
+        else:
+            return redirect(reverse('battery:index'))
 
 
 def update(request):

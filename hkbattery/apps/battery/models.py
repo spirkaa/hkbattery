@@ -69,27 +69,25 @@ def db_operations(results, operation):
             amps_c = round((float(r['capacity'])/1000 * float(r['discharge'])), 2)
             ctp = round((float(r['capacity']) / float(r['price'])), 2)
             ctw = round((float(r['capacity']) / float(r['weight'])), 2)
+            r['amps'] = amps_c
+            r['cap_to_price'] = ctp
+            r['cap_to_weight'] = ctw
         except:
             pass
         if operation == 'populate':
             try:
                 logger.info('Insert "%s"', r['name'])
-                item = Battery(amps=amps_c,
-                               cap_to_price=ctp,
-                               cap_to_weight=ctw,
-                               **r)
+                item = Battery(**r)
                 item.save()
             except:
                 logger.error('Cant insert %s, skip', r['name'])
                 raise
         elif operation == 'update':
-            r['amps'] = amps_c
-            r['cap_to_price'] = ctp
-            r['cap_to_weight'] = ctw
             item, created = Battery.objects.get_or_create(link=r['link'],
                                                           defaults=r)
             if item.price != Decimal(r['price']):
                 item.price = r['price']
+                item.cap_to_price = r['cap_to_price']
                 item.save()
                 logger.info('Updade "%s" PRICE', item.name)
             if item.ru_stock != int(r['ru_stock']):

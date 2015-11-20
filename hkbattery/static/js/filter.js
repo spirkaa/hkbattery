@@ -1,6 +1,7 @@
 // show/hide filter panel
 $(document).ready(function() {
-    setTimeout('$("#sidebar").toggleClass("collapsed");$("#content").toggleClass("col-md-12 col-md-10");', 1000)
+    setTimeout('$("#sidebar").toggleClass("collapsed");\
+        $("#content").toggleClass("col-md-12 col-md-10");', 1000)
     $(".toggle-sidebar").click(function() {
         $("#sidebar").toggleClass("collapsed");
         $("#content").toggleClass("col-md-12 col-md-10");
@@ -32,11 +33,12 @@ function apply_filter(action) {
     var data = {}
     data[action] = action
     $('input[class*="textinput textInput form-control"]').each(function(i, el) {
-        if ($(el).attr('name') == 'name') {
-            data[$(el).attr('name')] = $(el).val();
+        var name = $(el).attr('name')
+        if (name == 'name') {
+            data[name] = $(el).val();
         } else {
-            data[$(el).attr('name').slice(0, -1) + '0'] = $(el).data('slider').getValue()[0];
-            data[$(el).attr('name')] = $(el).data('slider').getValue()[1];
+            data[name.slice(0,-1) + '0'] = $(el).data('slider').getValue()[0];
+            data[name] = $(el).data('slider').getValue()[1];
         }
     });
     console.log(data)
@@ -48,8 +50,6 @@ function apply_filter(action) {
             $('#content').html($('#content', data).html());
         },
         error: function(xhr, errmsg, err) {
-            $('#messages').append("<div class='alert alert-danger fade in'>Oops! We have encountered an error: " + errmsg +
-                " <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button></div>");
             console.log(xhr.status + ": " + xhr.responseText);
         }
     });

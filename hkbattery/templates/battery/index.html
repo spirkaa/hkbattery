@@ -9,7 +9,12 @@
             <div class="bottom-buffer">{% crispy filter.form filter.form.helper %}</div>
         </div>
         <div class="col-md-10" id="content">
+          <form action="{% url 'battery:compare' %}" method="get">
+          <div class="form-actions">
+            <input type="submit" name="action" class="btn btn-primary" value="Compare" />
+          </div>
             <div id="table">{% render_table table 'table.html' %}</div>
+            </form>
         </div>
     </div>
 </div>

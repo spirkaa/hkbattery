@@ -10,10 +10,11 @@ class BatteryTable(tables.Table):
     price_rub = tables.Column(order_by=('price'))
     cap_to_price = tables.Column(attrs={"td": {"class": "tdbold"}})
     cap_to_weight = tables.Column(attrs={"td": {"class": "tdbold"}})
+    compare = tables.CheckBoxColumn(accessor='pk')
 
     class Meta:
         model = Battery
-        sequence = ('pic', 'name', 'price_rub', 'price', 'ru_stock',
+        sequence = ('compare', 'pic', 'name', 'price_rub', 'price', 'ru_stock',
                     's_config', 'capacity', 'discharge', 'amps',
                     'weight', 'cap_to_weight', 'cap_to_price', '...')
         exclude = ('id', 'created', 'modified', 'link')
