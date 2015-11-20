@@ -1,10 +1,33 @@
+// compare button and checkbox states
+$(document).ready(function() {
+    var btn = 'input[name="action"]'
+    var cbox = 'input[name="compare"]'
+    var mincount = 2
+    var maxcount = 5
+    $(btn).prop('disabled', true);
+    $(cbox).click(function() {
+        var cboxcount = $(cbox+':checked').length
+        if (cboxcount == 0){
+          $(btn).prop('value', 'Compare')
+        } else {
+          $(btn).prop('value', 'Compare ['+cboxcount+'/'+maxcount+']')
+        }
+        if (cboxcount < mincount){
+            $(btn).prop('disabled', true);
+        } else {
+            $(btn).prop('disabled', false);
+        };
+        var bol = cboxcount >= maxcount;
+        $(cbox).not(':checked').prop('disabled', bol);
+    });
+});
 // show/hide filter panel
 $(document).ready(function() {
     setTimeout('$("#sidebar").toggleClass("collapsed");\
-        $("#content").toggleClass("col-md-12 col-md-10");', 1000)
-    $(".toggle-sidebar").click(function() {
-        $("#sidebar").toggleClass("collapsed");
-        $("#content").toggleClass("col-md-12 col-md-10");
+        $("#content").toggleClass("col-md-12 col-md-10")', 1000)
+    $('.toggle-sidebar').click(function() {
+        $('#sidebar').toggleClass('collapsed');
+        $('#content').toggleClass('col-md-12 col-md-10');
         return false;
     });
 });
@@ -12,14 +35,14 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#row-main').on('click', '.sortable a', function(event) {
         event.preventDefault();
-        $('#content').load($(this).attr('href') + ' #table')
+        $('#content').load($(this).prop('href') + ' #table')
     });
 });
 // pagination
 $(document).ready(function() {
     $('#row-main').on('click', '.pagination a[href*="page"]', function(event) {
         event.preventDefault();
-        $('#content').load($(this).attr('href') + ' #table')
+        $('#content').load($(this).prop('href') + ' #table')
         $(window).scrollTop($('body').offset().top);
     });
 });
@@ -33,7 +56,7 @@ function apply_filter(action) {
     var data = {}
     data[action] = action
     $('input[class*="textinput textInput form-control"]').each(function(i, el) {
-        var name = $(el).attr('name')
+        var name = $(el).prop('name')
         if (name == 'name') {
             data[name] = $(el).val();
         } else {

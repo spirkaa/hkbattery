@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% load bootstrap3 %} {% load crispy_forms_tags %} {% load render_table from django_tables2 %} {% block main %}
 <div class="dpad container-fluid">
     <h1><a href="{% url 'battery:index' %}">{% block title %}HK Batteries{% endblock %}</a></h1>
-    <div class="bottom-buffer">
+    <div class="row bottom-buffer">
         <button type="button" class="btn btn-default toggle-sidebar"> « Toggle filter</button>
     </div>
     <div class="row" id="row-main">
@@ -22,13 +22,13 @@
 {% block bootstrap3_extra_script %}
     {{ block.super }}
     <script type="text/javascript">
-{% for k, v in filter_vals.items %}
+    {% for k, v in filter_vals.items %}
         $("#id_{{k}}_1").slider({
             step: 1,
             min: {{v.min}},
             max: {{v.max}},
             value: [{{v.min}},{{v.max}}],
-        });
-{% endfor %}
+            });
+    {% endfor %}
     </script>
 {% endblock %}
