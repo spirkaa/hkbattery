@@ -35,7 +35,7 @@ def get_product_page_urls(page):
 
 
 def get_product_data(product_page_url):
-    logger.info('Parsing %s' % product_page_url)
+    # logger.info('Parsing %s' % product_page_url)
     response = mechbrowser(product_page_url)
     name = response.soup.h1.get_text().replace(' (RU Warehouse)', '').strip()
     try:
@@ -88,8 +88,3 @@ def parser():
         results = pool.map(get_product_data, product_page_urls)
         logger.info('It took %d seconds.', round(time()-start, 2))
         return results
-
-
-if __name__ == '__main__':
-    print(len(parser()))
-    # print('It took', round(time()-start, 2), 'seconds.')
