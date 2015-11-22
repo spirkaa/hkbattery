@@ -35,14 +35,14 @@ $(document).ready(function() {
 $(document).ready(function() {
     $('#row-main').on('click', '.sortable a', function(event) {
         event.preventDefault();
-        $('#content').load($(this).prop('href') + ' #table')
+        $('#table').load($(this).prop('href') + ' #table')
     });
 });
 // pagination
 $(document).ready(function() {
     $('#row-main').on('click', '.pagination a[href*="page"]', function(event) {
         event.preventDefault();
-        $('#content').load($(this).prop('href') + ' #table')
+        $('#table').load($(this).prop('href') + ' #table')
         $(window).scrollTop($('body').offset().top);
     });
 });

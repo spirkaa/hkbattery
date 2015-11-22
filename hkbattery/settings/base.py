@@ -179,6 +179,12 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'default',
         },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'formatter': 'default',
+            'filename': 'log.log',
+        },
         'mail_admins': {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
@@ -199,7 +205,7 @@ LOGGING = {
             'propagate': True,
         },
         '': {
-            'handlers': ['console', ],
+            'handlers': ['console', 'file'],
             'level': 'INFO',
         }
     }

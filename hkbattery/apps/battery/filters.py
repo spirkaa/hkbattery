@@ -40,12 +40,13 @@ class BatteryFilter(django_filters.FilterSet):
         },
         models.DecimalField: {
             'filter_class': RangeFilterOne,
-            'help_text': 'raz'
         },
         models.SmallIntegerField: {
             'filter_class': RangeFilterOne
         }
     }
+
+    # s_config = django_filters.AllValuesFilter(widget=forms.CheckboxSelectMultiple)
 
     class Meta:
         model = Battery

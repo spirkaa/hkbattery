@@ -5,8 +5,10 @@ from django.db.models import Avg, Count, F, Max, Min, Sum, Q, Prefetch, Case, Wh
 from django_extensions.db.models import TimeStampedModel
 from .decorators import async
 from .battery_parser import parser
+from .utils import exchange_rate
 
 logger = logging.getLogger(__name__)
+ex_rate = exchange_rate('EUR', 'RUB')
 
 
 class CommonInfo(TimeStampedModel):
@@ -40,7 +42,7 @@ class Battery(CommonInfo):
 
     @property
     def price_rub(self):
-        return self.price * 72
+        return round((float(self.price) * ex_rate), 2)
 
     def __str__(self):
         return self.name
