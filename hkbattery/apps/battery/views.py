@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, render
 from django.views import generic
 from django_tables2 import RequestConfig
-from .models import Battery, min_max_values
+from .models import Battery
 from .filters import BatteryFilter
 from .tables import BatteryTable
 
@@ -22,7 +22,7 @@ class TableTemplateView(generic.TemplateView):
         RequestConfig(self.request, paginate={'per_page': 25}).configure(table)
         context['filter'] = filter
         context['table'] = table
-        context['filter_vals'] = min_max_values()
+        context['filter_vals'] = Battery.min_max.values()
         return context
 
 

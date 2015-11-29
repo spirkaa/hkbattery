@@ -29,6 +29,16 @@ class CommonInfo(TimeStampedModel):
         abstract = True
 
 
+class MinMaxManager(models.Manager):
+    def values(self):
+        fields = ['price', 'ru_stock', 's_config',
+                  'capacity', 'discharge', 'amps', 'weight']
+        min_max = []
+        for field in fields:
+            min_max.append(self.aggregate(min=Min(field), max=Max(field)))
+        return dict(zip(fields, min_max))
+
+
 class Battery(CommonInfo):
     s_config = models.SmallIntegerField('Config, S', null=True, blank=True)
     capacity = models.SmallIntegerField('Capacity, mAh', null=True, blank=True)
@@ -44,6 +54,9 @@ class Battery(CommonInfo):
     height = models.SmallIntegerField('Height, mm', null=True, blank=True)
     width = models.SmallIntegerField('Width, mm', null=True, blank=True)
 
+    objects = models.Manager()
+    min_max = MinMaxManager()
+
     class Meta:
         verbose_name = 'Battery'
         verbose_name_plural = 'Batteries'
@@ -51,26 +64,10 @@ class Battery(CommonInfo):
 
     @property
     def price_rub(self):
-        # return round((float(self.price) * ex_rate), 2)
         return round((self.price * ex_rate), 2)
 
     def __str__(self):
         return self.name
-
-
-def min_max_values():
-    fields = ['price', 'ru_stock', 's_config',
-              'capacity', 'discharge', 'amps', 'weight']
-    min_max = []
-    q = Battery.objects.all()
-    for field in fields:
-        min_val = q.aggregate(Min(field))
-        min_val['min'] = min_val.pop('{}__min'.format(field))
-        max_val = q.aggregate(Max(field))
-        max_val['max'] = max_val.pop('{}__max'.format(field))
-        vals_dict = {**min_val, **max_val}
-        min_max.append(vals_dict)
-    return dict(zip(fields, min_max))
 
 
 def db_operations(results, operation):
