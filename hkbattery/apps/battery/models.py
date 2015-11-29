@@ -1,7 +1,7 @@
 import logging
 from decimal import Decimal
 from django.db import models
-from django.db.models import Avg, Count, F, Max, Min, Sum, Q, Prefetch, Case, When
+from django.db.models import Max, Min
 from django_extensions.db.models import TimeStampedModel
 from .decorators import async
 from .battery_parser import parser
@@ -54,13 +54,11 @@ def min_max_values():
     min_max = []
     q = Battery.objects.all()
     for field in fields:
-        verb_name = Battery._meta.get_field(field).verbose_name.title()
-        v_name = {'v_name': verb_name}
         min_val = q.aggregate(Min(field))
         min_val['min'] = min_val.pop('{}__min'.format(field))
         max_val = q.aggregate(Max(field))
         max_val['max'] = max_val.pop('{}__max'.format(field))
-        vals_dict = {**v_name, **{**min_val, **max_val}}
+        vals_dict = {**min_val, **max_val}
         min_max.append(vals_dict)
     return dict(zip(fields, min_max))
 
@@ -74,7 +72,7 @@ def db_operations(results, operation):
             r['amps'] = amps_c
             r['cap_to_price'] = ctp
             r['cap_to_weight'] = ctw
-        except:
+        except KeyError:
             pass
         if operation == 'populate':
             try:
@@ -87,14 +85,22 @@ def db_operations(results, operation):
         elif operation == 'update':
             item, created = Battery.objects.get_or_create(link=r['link'],
                                                           defaults=r)
+            # logger.info('%s, %s', item.name, r['price'])
             if item.price != Decimal(r['price']):
+                pricelog = item.price
                 item.price = r['price']
-                item.cap_to_price = r['cap_to_price']
+                try:
+                    item.cap_to_price = r['cap_to_price']
+                except KeyError:
+                    logger.error('"%s" not a battery', item.name)
                 item.save()
-                logger.info('Updade "%s" PRICE', item.name)
+                logger.info('"%s" PRICE: %s -> %s',
+                            item.name, str(pricelog), str(item.price))
             if item.ru_stock != int(r['ru_stock']):
+                stocklog = item.ru_stock
                 item.ru_stock = r['ru_stock']
-                logger.info('Updade "%s" STOCK', item.name)
+                logger.info('"%s" STOCK: %s -> %s',
+                            item.name, str(stocklog), str(item.ru_stock))
                 item.save()
 
 

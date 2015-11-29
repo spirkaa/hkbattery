@@ -1,21 +1,21 @@
 // compare button and checkbox states
 $(document).ready(function() {
-    var btn = 'input[name="action"]'
+    var $btn = $('input[name="action"]')
     var cbox = 'input[name="compare"]'
     var mincount = 2
     var maxcount = 5
-    $(btn).prop('disabled', true);
-    $(cbox).click(function() {
+    $btn.prop('disabled', true);
+    $('#row-main').on('click', cbox, function() {
         var cboxcount = $(cbox+':checked').length
         if (cboxcount == 0){
-          $(btn).prop('value', 'Compare')
+          $btn.prop('value', 'Compare')
         } else {
-          $(btn).prop('value', 'Compare ['+cboxcount+'/'+maxcount+']')
+          $btn.prop('value', 'Compare ['+cboxcount+'/'+maxcount+']')
         }
         if (cboxcount < mincount){
-            $(btn).prop('disabled', true);
+            $btn.prop('disabled', true);
         } else {
-            $(btn).prop('disabled', false);
+            $btn.prop('disabled', false);
         };
         var bol = cboxcount >= maxcount;
         $(cbox).not(':checked').prop('disabled', bol);
@@ -43,7 +43,7 @@ $(document).ready(function() {
     $('#row-main').on('click', '.pagination a[href*="page"]', function(event) {
         event.preventDefault();
         $('#table').load($(this).prop('href') + ' #table')
-        $(window).scrollTop($('body').offset().top);
+        $('html, body').animate({scrollTop: 0}, 500);
     });
 });
 // filtering

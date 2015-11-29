@@ -4,6 +4,8 @@ from time import time
 import mechanicalsoup
 
 logger = logging.getLogger(__name__)
+logging.getLogger("requests").setLevel(logging.WARNING)
+
 start = time()
 
 root_url = 'http://www.hobbyking.com/hobbyking/store/'
@@ -21,21 +23,20 @@ def mechbrowser(url):
 
 
 def get_catalog_page_urls():
-    logger.info('Parsing catalog nav page URLs')
+    logger.info('Parsing catalog page URLs...')
     response = mechbrowser(index_url)
     nav = response.soup.select('form.paging a')
     return [a.attrs.get('href') for a in nav][:-1]
 
 
 def get_product_page_urls(page):
-    logger.info('Parsing product page URLs on %s' % page)
+    logger.info('Parsing product page URLs...')
     response = mechbrowser(page)
     links = response.soup.select('td[colspan="5"] a[style]')
     return [a.attrs.get('href') for a in links]
 
 
 def get_product_data(product_page_url):
-    # logger.info('Parsing %s' % product_page_url)
     response = mechbrowser(product_page_url)
     name = response.soup.h1.get_text().replace(' (RU Warehouse)', '').strip()
     try:
