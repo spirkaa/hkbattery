@@ -5,10 +5,17 @@ from django.db.models import Max, Min
 from django_extensions.db.models import TimeStampedModel
 from .decorators import async
 from .battery_parser import parser
-from .utils import exchange_rate
 
 logger = logging.getLogger(__name__)
-ex_rate = exchange_rate('EUR', 'RUB')
+
+
+class ExchRate(models.Model):
+    ex_rate = models.DecimalField('EUR to RUB', max_digits=6, decimal_places=2)
+
+    def __str__(self):
+        return str(self.ex_rate)
+
+ex_rate = ExchRate.objects.get(pk=1).ex_rate
 
 
 class CommonInfo(TimeStampedModel):
@@ -26,8 +33,10 @@ class Battery(CommonInfo):
     s_config = models.SmallIntegerField('Config, S', null=True, blank=True)
     capacity = models.SmallIntegerField('Capacity, mAh', null=True, blank=True)
     weight = models.SmallIntegerField('Weight, g', null=True, blank=True)
-    cap_to_weight = models.DecimalField('Cap / weight', null=True, blank=True, max_digits=6, decimal_places=2)
-    cap_to_price = models.DecimalField('Cap / price', null=True, blank=True, max_digits=6, decimal_places=2)
+    cap_to_weight = models.DecimalField('Cap / weight', null=True, blank=True,
+                                        max_digits=6, decimal_places=2)
+    cap_to_price = models.DecimalField('Cap / price', null=True, blank=True,
+                                       max_digits=6, decimal_places=2)
     discharge = models.SmallIntegerField('Discharge, C', null=True, blank=True)
     amps = models.SmallIntegerField('Current, A', null=True, blank=True)
     charge = models.SmallIntegerField('Charge, C', null=True, blank=True)
@@ -42,7 +51,8 @@ class Battery(CommonInfo):
 
     @property
     def price_rub(self):
-        return round((float(self.price) * ex_rate), 2)
+        # return round((float(self.price) * ex_rate), 2)
+        return round((self.price * ex_rate), 2)
 
     def __str__(self):
         return self.name

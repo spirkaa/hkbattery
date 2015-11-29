@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Battery
+from .models import ExchRate, Battery
 
 
 class BatteryAdmin(admin.ModelAdmin):
@@ -42,3 +42,4 @@ class BatteryAdmin(admin.ModelAdmin):
     ]
 
 admin.site.register(Battery, BatteryAdmin)
+admin.site.register(ExchRate)
