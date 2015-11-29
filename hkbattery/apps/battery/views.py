@@ -16,13 +16,16 @@ class TableTemplateView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(TableTemplateView, self).get_context_data(**kwargs)
-        filter = BatteryFilter(self.request.GET, queryset=self.get_queryset(**kwargs))
+        filter = BatteryFilter(self.request.GET,
+                               queryset=self.get_queryset(**kwargs))
         filter.form.helper = BatteryFilter().helper
         table = BatteryTable(filter.qs)
         RequestConfig(self.request, paginate={'per_page': 25}).configure(table)
         context['filter'] = filter
         context['table'] = table
-        context['filter_vals'] = Battery.min_max.values()
+        fields = ['price', 'ru_stock', 's_config',
+                  'capacity', 'discharge', 'amps', 'weight']
+        context['filter_vals'] = Battery.min_max.values(fields)
         return context
 
 

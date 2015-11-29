@@ -9,7 +9,8 @@ from .models import Battery
 class RangeWidgetOne(forms.MultiWidget):
 
     def __init__(self, attrs=None):
-        widgets = (forms.HiddenInput(attrs=attrs), forms.TextInput(attrs=attrs))
+        widgets = (forms.HiddenInput(attrs=attrs),
+                   forms.TextInput(attrs=attrs))
         super(RangeWidgetOne, self).__init__(widgets, attrs)
 
     def decompress(self, value):
@@ -46,12 +47,8 @@ class BatteryFilter(django_filters.FilterSet):
         }
     }
 
-    # s_config = django_filters.AllValuesFilter(widget=forms.CheckboxSelectMultiple)
-
     class Meta:
         model = Battery
-        # fields = ['name', 'price', 'ru_stock', 's_config',
-        # 'capacity', 'weight', 'discharge', 'amps']
 
     @property
     def helper(self):
@@ -69,5 +66,4 @@ class BatteryFilter(django_filters.FilterSet):
             'amps',
             'weight',
             Submit('filter', 'Filter'))
-
         return helper

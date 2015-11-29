@@ -30,9 +30,7 @@ class CommonInfo(TimeStampedModel):
 
 
 class MinMaxManager(models.Manager):
-    def values(self):
-        fields = ['price', 'ru_stock', 's_config',
-                  'capacity', 'discharge', 'amps', 'weight']
+    def values(self, fields):
         min_max = []
         for field in fields:
             min_max.append(self.aggregate(min=Min(field), max=Max(field)))
@@ -70,29 +68,21 @@ class Battery(CommonInfo):
         return self.name
 
 
-def db_operations(results, operation):
+def battery_update(results):
     for r in results:
         try:
-            amps_c = round((float(r['capacity'])/1000 * float(r['discharge'])), 2)
-            ctp = round((float(r['capacity']) / float(r['price'])), 2)
-            ctw = round((float(r['capacity']) / float(r['weight'])), 2)
+            cap = r['capacity']
+            amps_c = round((float(cap)/1000 * float(r['discharge'])), 2)
+            ctp = round((float(cap) / float(r['price'])), 2)
+            ctw = round((float(cap) / float(r['weight'])), 2)
             r['amps'] = amps_c
             r['cap_to_price'] = ctp
             r['cap_to_weight'] = ctw
         except KeyError:
             pass
-        if operation == 'populate':
-            try:
-                logger.info('Insert "%s"', r['name'])
-                item = Battery(**r)
-                item.save()
-            except:
-                logger.error('Cant insert %s, skip', r['name'])
-                raise
-        elif operation == 'update':
-            item, created = Battery.objects.get_or_create(link=r['link'],
-                                                          defaults=r)
-            # logger.info('%s, %s', item.name, r['price'])
+        item, created = Battery.objects.get_or_create(link=r['link'],
+                                                      defaults=r)
+        if not created:
             if item.price != Decimal(r['price']):
                 pricelog = item.price
                 item.price = r['price']
@@ -109,9 +99,11 @@ def db_operations(results, operation):
                 logger.info('"%s" STOCK: %s -> %s',
                             item.name, str(stocklog), str(item.ru_stock))
                 item.save()
+        else:
+            logger.info('CREATED "%s"', item.name)
 
 
 @async
-def run_db_operation(operation):
+def run_battery_update():
     results = parser()
-    db_operations(results, operation)
+    battery_update(results)

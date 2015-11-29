@@ -48,7 +48,7 @@ def get_product_data(product_page_url):
         price = response.soup.select('#price_lb')[0].get_text()
         price = price.replace('EU', '')
     except:
-        price = None
+        price = 0
     try:
         stock = response.soup.select('#pstock2')[0].get_text()
         if stock == '10+':
