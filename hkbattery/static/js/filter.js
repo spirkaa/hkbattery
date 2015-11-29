@@ -1,5 +1,5 @@
-// compare button and checkbox states
-$(document).ready(function() {
+$(function() {
+    // compare button and checkbox states
     var $btn = $('input[name="action"]')
     var cbox = 'input[name="compare"]'
     var mincount = 2
@@ -20,9 +20,7 @@ $(document).ready(function() {
         var bol = cboxcount >= maxcount;
         $(cbox).not(':checked').prop('disabled', bol);
     });
-});
-// show/hide filter panel
-$(document).ready(function() {
+    // show/hide filter panel
     setTimeout('$("#sidebar").toggleClass("collapsed");\
         $("#content").toggleClass("col-md-12 col-md-10")', 1000)
     $('.toggle-sidebar').click(function() {
@@ -30,31 +28,26 @@ $(document).ready(function() {
         $('#content').toggleClass('col-md-12 col-md-10');
         return false;
     });
-});
-// column sorting
-$(document).ready(function() {
-    $('#row-main').on('click', '.sortable a', function(event) {
-        event.preventDefault();
-        $('#table').load($(this).prop('href') + ' #table')
-    });
-});
-// pagination
-$(document).ready(function() {
+    // pagination
     $('#row-main').on('click', '.pagination a[href*="page"]', function(event) {
         event.preventDefault();
         $('#table').load($(this).prop('href') + ' #table')
         $('html, body').animate({scrollTop: 0}, 500);
     });
-});
-// filtering
-$('#filter').on('click', 'input[name="filter"]', function(event) {
-    event.preventDefault();
-    apply_filter('filter');
+    // column sorting
+    $('#row-main').on('click', '.sortable a', function(event) {
+        event.preventDefault();
+        $('#table').load($(this).prop('href') + ' #table')
+    });
+    // filtering
+    $('#filter').on('click', 'input[name="filter"]', function(event) {
+        event.preventDefault();
+        apply_filter();
+    });
 });
 
-function apply_filter(action) {
+function apply_filter() {
     var data = {}
-    data[action] = action
     $('input[class*="textinput textInput form-control"]').each(function(i, el) {
         var name = $(el).prop('name')
         if (name == 'name') {
@@ -64,7 +57,7 @@ function apply_filter(action) {
             data[name] = $(el).data('slider').getValue()[1];
         }
     });
-    console.log(data)
+    // console.log(data)
     $.ajax({
         url: window.location.href,
         type: 'get',
