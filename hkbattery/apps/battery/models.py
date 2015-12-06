@@ -15,8 +15,6 @@ class ExchRate(models.Model):
     def __str__(self):
         return str(self.ex_rate)
 
-ex_rate = ExchRate.objects.get(pk=1).ex_rate
-
 
 class CommonInfo(TimeStampedModel):
     link = models.URLField('Link to HobbyKing', unique=True)
@@ -54,6 +52,7 @@ class Battery(CommonInfo):
 
     objects = models.Manager()
     min_max = MinMaxManager()
+    ex_rate = ExchRate.objects.get(pk=1).ex_rate
 
     class Meta:
         verbose_name = 'Battery'
@@ -62,7 +61,7 @@ class Battery(CommonInfo):
 
     @property
     def price_rub(self):
-        return round((self.price * ex_rate), 2)
+        return round((self.price * self.ex_rate), 2)
 
     def __str__(self):
         return self.name

@@ -183,7 +183,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.FileHandler',
             'formatter': 'default',
-            'filename': 'log.log',
+            'filename': 'logs/hkbattery.log',
         },
         'mail_admins': {
             'level': 'ERROR',

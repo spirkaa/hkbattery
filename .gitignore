@@ -63,6 +63,7 @@ target/
 
 # workspace files are user-specific
 *.sublime-workspace
+*.sublime-project
 
 .DS_Store
 .AppleDouble

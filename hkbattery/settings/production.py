@@ -4,6 +4,7 @@ from hkbattery.settings.base import *
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
+STATIC_ROOT = '/var/www/static/'
 
 
 # Use the cached template loader so template is compiled once and read from
