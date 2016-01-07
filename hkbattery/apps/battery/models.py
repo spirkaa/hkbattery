@@ -3,7 +3,6 @@ from decimal import Decimal
 from django.db import models
 from django.db.models import Max, Min
 from django_extensions.db.models import TimeStampedModel
-from .decorators import async
 from .battery_parser import parser
 
 logger = logging.getLogger(__name__)
