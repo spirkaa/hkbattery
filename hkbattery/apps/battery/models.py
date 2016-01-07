@@ -21,7 +21,7 @@ class CommonInfo(TimeStampedModel):
     name = models.CharField('Name', max_length=200)
     pic = models.URLField('Image link', blank=True)
     price = models.DecimalField('Price, €', max_digits=6, decimal_places=2)
-    ru_stock = models.SmallIntegerField('RU stock', null=True, blank=True)
+    ru_stock = models.NullBooleanField('RU stock', null=True, blank=True)
 
     class Meta:
         abstract = True
@@ -92,7 +92,7 @@ def battery_update(results):
                 item.save()
                 logger.info('"%s" PRICE: %s -> %s',
                             item.name, str(pricelog), str(item.price))
-            if item.ru_stock != int(r['ru_stock']):
+            if item.ru_stock != r['ru_stock']:
                 stocklog = item.ru_stock
                 item.ru_stock = r['ru_stock']
                 logger.info('"%s" STOCK: %s -> %s',

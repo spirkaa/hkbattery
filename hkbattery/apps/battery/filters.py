@@ -58,8 +58,8 @@ class BatteryFilter(django_filters.FilterSet):
         helper.form_id = 'filter'
         helper.layout = Layout(
             'name',
-            'price',
             'ru_stock',
+            'price',
             's_config',
             'capacity',
             'discharge',

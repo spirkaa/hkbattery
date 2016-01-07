@@ -1,7 +1,7 @@
 import logging
 from multiprocessing.pool import ThreadPool
 from time import time
-import mechanicalsoup
+from mechanicalsoup import Browser
 
 logger = logging.getLogger(__name__)
 logging.getLogger("requests").setLevel(logging.WARNING)
@@ -18,49 +18,51 @@ def rounder(num):
 
 
 def mechbrowser(url):
-    browser = mechanicalsoup.Browser()
+    browser = Browser()
     return browser.get(root_url + url)
 
 
 def get_catalog_page_urls():
     logger.info('Parsing catalog page URLs...')
-    response = mechbrowser(index_url)
-    nav = response.soup.select('form.paging a')
+    r = mechbrowser(index_url)
+    nav = r.soup.select('form.paging a')
     return [a.attrs.get('href') for a in nav][:-1]
 
 
 def get_product_page_urls(page):
     logger.info('Parsing product page URLs...')
-    response = mechbrowser(page)
-    links = response.soup.select('td[colspan="5"] a[style]')
+    r = mechbrowser(page)
+    links = r.soup.select('td[colspan="5"] a[style]')
     return [a.attrs.get('href') for a in links]
 
 
 def get_product_data(product_page_url):
-    response = mechbrowser(product_page_url)
-    name = response.soup.h1.get_text().replace(' (RU Warehouse)', '').strip()
+    r = mechbrowser(product_page_url)
     try:
-        pic = response.soup.select('img[id="mainpic1"]')[0].attrs.get('src')
+        name = r.soup.select_one('#productNameWidget').text.replace(' (RU Warehouse)', '').strip()
+    except:
+        name = '_'
+    try:
+        pic = r.soup.select('img[id="mainpic1"]')[0].attrs.get('src')
         pic = root_url + pic
     except:
         pic = ''
     try:
-        price = response.soup.select('#price_lb')[0].get_text()
+        price = r.soup.select('p.productCTABoxPriceUnit')[0].get_text()
         price = price.replace('EU', '')
     except:
         price = 0
     try:
-        stock = response.soup.select('#pstock2')[0].get_text()
-        if stock == '10+':
-            stockbar = response.soup.select('#stockbar')[0].attrs.get('style')
-            stock = rounder(stockbar.replace('width: ', '').replace('%', ''))
-        elif stock == 'BK':
-            stock = '0'
+        stock = r.soup.select_one('label.productCtaAnswer').get_text()
+        if stock == 'Out of Stock':
+            stock = False
+        else:
+            stock = True
     except:
         stock = ''
     product_data = [root_url + product_page_url, name, pic, price, stock]
     try:
-        specs = response.soup.select('span[id^=prodDataArea_]')[0]
+        specs = r.soup.select('span[id^=prodDataArea_]')[0]
         rows = specs.select('tr')
         for row in rows:
             cols = row.select('td')

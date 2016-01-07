@@ -23,8 +23,8 @@ class TableTemplateView(generic.TemplateView):
         RequestConfig(self.request, paginate={'per_page': 25}).configure(table)
         context['filter'] = filter
         context['table'] = table
-        fields = ['price', 'ru_stock', 's_config',
-                  'capacity', 'discharge', 'amps', 'weight']
+        fields = ['price', 's_config', 'capacity',
+                  'discharge', 'amps', 'weight']
         context['filter_vals'] = Battery.min_max.values(fields)
         return context
 
