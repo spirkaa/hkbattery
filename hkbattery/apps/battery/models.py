@@ -102,7 +102,5 @@ def battery_update(results):
             logger.info('CREATED "%s"', item.name)
 
 
-@async
 def run_battery_update():
-    results = parser()
-    battery_update(results)
+    battery_update(parser())
